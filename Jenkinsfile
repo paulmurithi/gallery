@@ -2,7 +2,7 @@ pipeline{
     agent any
 
     tools {
-        nodejs '18.16.0'
+        nodejs '18.16.1'
     }
     
     stages{
@@ -19,7 +19,7 @@ pipeline{
         }
         stage('Deploy'){
             steps{
-                sh 'rander deploy --app-name your-app-name --path /path/to/your/app'
+                
             }
         }
     }
