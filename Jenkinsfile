@@ -3,7 +3,9 @@ pipeline{
 
     stages{
         stage('clone'){
-            git 'https://github.com/paulmurithi/gallery.git'
+            steps{
+                git 'https://github.com/paulmurithi/gallery.git'
+            }
         }
         stage('Build'){
             steps{
