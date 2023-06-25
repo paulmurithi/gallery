@@ -1,25 +1,25 @@
 pipeline{
     agent any
 
-    tools {
-        nodejs '18.16.1'
-    }
-    
     stages{
+        stage('clone'){
+            git 'https://github.com/paulmurithi/gallery.git'
+        }
         stage('Build'){
             steps{
                 sh 'npm install'
-                sh 'npm run build'
             }
         }
         stage('Test'){
             steps{
-                sh 'npm run test'
+                sh 'npm test'
             }
         }
         stage('Deploy'){
             steps{
-                
+               withCredentials([usernameColonPassword(credentialsId: 'heroku-api-key', variable: 'HEROKU_CREDENTIALS')]) {
+                    sh 'git push https://${HEROKU_CREDENTIALS}@git.heroku.com/gallery-practise-app.git master'
+               } 
             }
         }
     }
