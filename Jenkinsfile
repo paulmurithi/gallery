@@ -28,9 +28,11 @@ pipeline{
     post {
     always {
       emailext (
+        to: 'murithi.paul@student.moringaschool.com',
         subject: 'Build Notification - ${currentBuild.fullDisplayName}',
         body: '''<p>Build Status: ${currentBuild.result}</p>
                  <p>Build URL: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>''',
+        recipientProviders: [developers(), requestor()],
         attachLog: true
       )
     }
