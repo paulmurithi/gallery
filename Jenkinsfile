@@ -1,6 +1,10 @@
 pipeline{
     agent any
 
+    environment{
+        APP_URL = 'https://gallery-practise-app-26f62825bb72.herokuapp.com/'
+    }
+
     stages{
         stage('clone'){
             steps{
@@ -33,6 +37,15 @@ pipeline{
                     sh 'git push https://${HEROKU_CREDENTIALS}@git.heroku.com/gallery-practise-app.git master'
                } 
             }
+        }
+    }
+
+    post{
+        failure{
+            slackSend color:"danger", message: "Build failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+        }
+        success{
+            slackSend color:"good", message: "Build success - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${APP_URL}|Link>)"
         }
     }
 }
