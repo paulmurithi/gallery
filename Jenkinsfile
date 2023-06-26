@@ -7,26 +7,31 @@ pipeline{
 
     stages{
 
-        slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
 
         stage('clone'){
+           
             steps{
+                
+                slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                
                 git 'https://github.com/paulmurithi/gallery.git'
             }
         }
         stage('Build'){
 
-            slackSend (color: '#FFFF00', message: "Building: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-
             steps{
+               
+                slackSend (color: '#FFFF00', message: "Building: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+               
                 sh 'npm install'
             }
         }
         stage('Test'){
-
-            slackSend (color: '#FFFF00', message: "TESTING: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-
+            
             steps{
+               
+                slackSend (color: '#FFFF00', message: "TESTING: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+               
                 sh 'npm test'
             }
             post {
@@ -41,10 +46,11 @@ pipeline{
             }
         }
         stage('Deploy'){
-
-            slackSend (color: '#FFFF00', message: "DEPLOYING: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
             
             steps{
+               
+               slackSend (color: '#FFFF00', message: "DEPLOYING: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+               
                withCredentials([usernameColonPassword(credentialsId: 'heroku-api-key', variable: 'HEROKU_CREDENTIALS')]) {
                     sh 'git push https://${HEROKU_CREDENTIALS}@git.heroku.com/gallery-practise-app.git master'
                } 
