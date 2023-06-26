@@ -21,7 +21,7 @@ pipeline{
 
             steps{
                
-                slackSend (color: '#FFFF00', message: "Building: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                slackSend (color: '#FFFF00', message: "BUILDING: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
                
                 sh 'npm install'
             }
