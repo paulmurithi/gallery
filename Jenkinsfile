@@ -16,6 +16,16 @@ pipeline{
             steps{
                 sh 'npm test'
             }
+            post {
+                failure {
+                emailext (
+                    subject: "Test stage failed: ${currentBuild.fullDisplayName}",
+                    body: """<p>The test stage has failed in the build:</p>
+                            <p>Build URL: <a href='${env.BUILD_URL}'>${env.BUILD_URL}</a></p>""",
+                    to: 'murithi.paul@student.moringaschool.com'
+                )
+                }
+            }
         }
         stage('Deploy'){
             steps{
@@ -26,13 +36,6 @@ pipeline{
         }
     }
     post {
-    always {
-      emailext (
-        to: 'murithi.paul@student.moringaschool.com',
-        subject: "Build Notification - ${currentBuild.fullDisplayName}",
-        body: "test",
-        attachLog: true
-      )
-    }
+    
   }
 }
